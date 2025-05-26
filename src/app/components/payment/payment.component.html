@@ -1,0 +1,27 @@
+<div class="container my-4">
+  <h2 class="text-primary mb-4">Make a Payment</h2>
+  <div class="card shadow-sm p-4">
+    <form (ngSubmit)="pay()">
+      <!-- Recipient -->
+      <div class="mb-3">
+        <label for="recipient" class="form-label">Recipient UPI ID / Phone Number</label>
+        <input [(ngModel)]="payment.recipient" name="recipient" required type="text" class="form-control" placeholder="Recipient's UPI ID or Phone" />
+      </div>
+      
+      <!-- Amount -->
+      <div class="mb-3">
+        <label for="amount" class="form-label">Amount</label>
+        <input [(ngModel)]="payment.amount" name="amount" required type="number" class="form-control" placeholder="e.g., 100" />
+      </div>
+      
+      <!-- Note -->
+      <div class="mb-3">
+        <label for="note" class="form-label">Note (Optional)</label>
+        <input [(ngModel)]="payment.note" name="note" type="text" class="form-control" placeholder="Payment note" />
+      </div>
+      
+      <!-- Submit Button -->
+      <button type="submit" class="btn btn-primary w-100">Pay Now</button>
+    </form>
+  </div>
+</div>

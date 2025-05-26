@@ -1,0 +1,140 @@
+<div class="auth-container">
+  <div id="signupForm" class="form-container shadow-sm">
+    <h2 class="mb-4">Sign Up</h2>
+    
+    <!-- Error message alert -->
+    <div *ngIf="errorMessage" class="alert alert-danger py-2" role="alert">
+      <small>{{ errorMessage }}</small>
+    </div>
+    
+    <form (ngSubmit)="register()" id="signup" [ngClass]="{'opacity-75': isSubmitting}" class="mb-3">
+      <div class="mb-3">
+        <input 
+          [(ngModel)]="user.name" 
+          name="name" 
+          required 
+          type="text" 
+          id="Name" 
+          class="form-control-lg"
+          placeholder="Full Name"
+          [disabled]="isSubmitting" />
+      </div>
+      
+      <div class="mb-3">
+        <input 
+          [(ngModel)]="user.email" 
+          name="email" 
+          required 
+          type="email" 
+          id="signupEmail" 
+          class="form-control-lg"
+          placeholder="Email"
+          [disabled]="isSubmitting" />
+      </div>
+      
+      <div class="mb-3">
+        <input 
+          [(ngModel)]="user.upiId" 
+          name="upiId" 
+          required 
+          type="text" 
+          id="upiId" 
+          class="form-control-lg"
+          placeholder="UPI ID (example@bank)"
+          [disabled]="isSubmitting" />
+      </div>
+      
+      <div class="mb-3">
+        <input 
+          [(ngModel)]="user.password" 
+          name="password" 
+          required 
+          type="password" 
+          id="signupPassword" 
+          class="form-control-lg"
+          placeholder="Password"
+          (input)="validatePassword()"
+          [disabled]="isSubmitting" />
+      </div>
+      
+      <div class="mb-3">
+        <input 
+          [(ngModel)]="confirmPassword" 
+          name="confirmPassword" 
+          required 
+          type="password" 
+          id="confirmPassword" 
+          class="form-control-lg"
+          placeholder="Confirm Password"
+          (input)="validatePassword()"
+          [disabled]="isSubmitting" />
+      </div>
+      
+      <!-- Password strength indicator -->
+      <div *ngIf="user.password" class="mb-3">
+        <div class="d-flex justify-content-between mb-1">
+          <small>Password Strength: <span class="fw-medium">{{ passwordStrengthText }}</span></small>
+        </div>
+        <div class="progress" style="height: 5px;">
+          <div 
+            class="progress-bar {{ passwordStrengthClass }}" 
+            role="progressbar" 
+            [style.width.%]="passwordStrength" 
+            aria-valuenow="0" 
+            aria-valuemin="0" 
+            aria-valuemax="100">
+          </div>
+        </div>
+      </div>
+      
+      <!-- Password rules -->
+      <div id="passwordRules" *ngIf="user.password" class="mb-3 p-2 p-sm-3">
+        <p class="mb-1 fw-medium">Password must:</p>
+        <ul class="mb-2 ps-3">
+          <li id="lengthRule" [ngClass]="{'valid': passwordValidation.minLength}">
+            Be between 8-20 characters
+          </li>
+          <li id="uppercaseRule" [ngClass]="{'valid': passwordValidation.hasUpperCase}">
+            Include at least one uppercase letter
+          </li>
+          <li id="lowercaseRule" [ngClass]="{'valid': passwordValidation.hasLowerCase}">
+            Include at least one lowercase letter
+          </li>
+          <li id="numberRule" [ngClass]="{'valid': passwordValidation.hasNumber}">
+            Include at least one number
+          </li>
+          <li id="specialCharRule" [ngClass]="{'valid': passwordValidation.hasSpecialChar}">
+            Include at least one special character
+          </li>
+        </ul>
+        
+        <!-- Password match indicator -->
+        <p *ngIf="confirmPassword" [ngClass]="{'valid': passwordValidation.passwordsMatch}" class="mb-0">
+          Passwords {{ passwordValidation.passwordsMatch ? 'match' : 'do not match' }}
+        </p>
+      </div>
+      
+      <button 
+        type="submit" 
+        class="btn-lg w-100 mt-2"
+        [disabled]="isSubmitting">
+        <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+        {{ isSubmitting ? 'Signing Up...' : 'Sign Up' }}
+      </button>
+    </form>
+    
+    <p class="text-center mb-0">
+      Already have an account? <a routerLink="/login" class="fw-medium">Login</a>
+    </p>
+  </div>
+</div>
+
+<script>
+  // Add auth-page class to body for login/register pages
+  document.body.classList.add('auth-page');
+  
+  // Clean up when component is destroyed
+  window.addEventListener('beforeunload', function() {
+    document.body.classList.remove('auth-page');
+  });
+</script>
