@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ApiService } from '../../services/api.service';
-import { Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -20,7 +21,7 @@ export class LoginComponent {
   isSubmitting = false;
   errorMessage = '';
   
-  constructor(private api: ApiService, private router: Router) {}
+  constructor(private api: ApiService, private authService: AuthService) {}
   
   // Validate email format
   isValidEmail(): boolean {
@@ -81,12 +82,8 @@ export class LoginComponent {
     this.api.loginUser(this.credentials).subscribe({
       next: (response) => {
         this.isSubmitting = false;
-        // Save token/session if needed
-        localStorage.setItem('auth_token', response.token || 'dummy-token');
-        localStorage.setItem('user_email', this.credentials.email);
-        
-        // Navigate to dashboard
-        this.router.navigate(['/dashboard']);
+        // Use AuthService to handle login and navigation
+        this.authService.login(response.token || 'dummy-token', this.credentials.email);
       },
       error: (error) => {
         this.isSubmitting = false;

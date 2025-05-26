@@ -7,14 +7,24 @@
     </button>
     <div class="collapse navbar-collapse mt-2 mt-lg-0" id="navbarNav">
       <ul class="navbar-nav ms-auto text-center">
-        <li class="nav-item my-1 my-lg-0">
-          <a class="nav-link px-3 py-2 mx-lg-1 rounded" routerLink="/login" routerLinkActive="active fw-bold bg-primary-subtle text-white">Login</a>
-        </li>
-        <li class="nav-item my-1 my-lg-0">
-          <a class="nav-link px-3 py-2 mx-lg-1 rounded" routerLink="/register" routerLinkActive="active fw-bold bg-primary-subtle text-white">Register</a>
-        </li>
-        <li class="nav-item my-1 my-lg-0">
+        <!-- Show Login and Register only when not authenticated -->
+        <ng-container *ngIf="!(authService.isAuthenticated$ | async)">
+          <li class="nav-item my-1 my-lg-0">
+            <a class="nav-link px-3 py-2 mx-lg-1 rounded" routerLink="/login" routerLinkActive="active fw-bold bg-primary-subtle text-white">Login</a>
+          </li>
+          <li class="nav-item my-1 my-lg-0">
+            <a class="nav-link px-3 py-2 mx-lg-1 rounded" routerLink="/register" routerLinkActive="active fw-bold bg-primary-subtle text-white">Register</a>
+          </li>
+        </ng-container>
+        
+        <!-- Show Dashboard only when authenticated -->
+        <li *ngIf="authService.isAuthenticated$ | async" class="nav-item my-1 my-lg-0">
           <a class="nav-link px-3 py-2 mx-lg-1 rounded" routerLink="/dashboard" routerLinkActive="active fw-bold bg-primary-subtle text-white">Dashboard</a>
+        </li>
+        
+        <!-- Show Sign Out only when authenticated -->
+        <li *ngIf="authService.isAuthenticated$ | async" class="nav-item my-1 my-lg-0">
+          <a class="nav-link px-3 py-2 mx-lg-1 rounded" href="javascript:void(0)" (click)="signOut()">Sign Out</a>
         </li>
       </ul>
     </div>

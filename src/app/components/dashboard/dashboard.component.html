@@ -1,8 +1,14 @@
 <div class="container my-4">
   <!-- Header -->
   <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center mb-4">
-    <h2 class="text-primary fw-bold mb-3 mb-sm-0">Dashboard</h2>
-    <button class="btn btn-outline-primary w-100 w-sm-auto" routerLink="/payment">New Payment</button>
+    <div>
+      <h2 class="text-primary fw-bold mb-1 mb-sm-0">Dashboard</h2>
+      <p class="text-muted" *ngIf="userEmail">Welcome, {{userEmail}}</p>
+    </div>
+    <div class="d-flex gap-2 w-100 w-sm-auto">
+      <button class="btn btn-outline-primary flex-grow-1" routerLink="/payment">New Payment</button>
+      <button class="btn btn-outline-danger flex-grow-1" (click)="signOut()">Sign Out</button>
+    </div>
   </div>
 
   <!-- Balance Cards -->
@@ -48,7 +54,17 @@
 
   <!-- Recent Transactions -->
   <h4 class="text-primary mb-3">Recent Transactions</h4>
-  <div class="table-responsive shadow-sm rounded">
+  
+  <!-- Loading indicator -->
+  <div *ngIf="isLoading" class="text-center my-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="mt-2">Loading transactions...</p>
+  </div>
+  
+  <!-- Transactions table -->
+  <div *ngIf="!isLoading" class="table-responsive shadow-sm rounded">
     <table class="table table-striped table-hover align-middle mb-0">
       <thead class="table-primary">
         <tr>
