@@ -83,7 +83,9 @@ export class LoginComponent {
       next: (response) => {
         this.isSubmitting = false;
         // Use AuthService to handle login and navigation
-        this.authService.login(response.token || 'dummy-token', this.credentials.email);
+        // Use token expiration from backend response if available, otherwise default to 1 hour
+        const expiration = response.token_expiration || 3600000;
+        this.authService.login(response.token || 'dummy-token', this.credentials.email, expiration);
       },
       error: (error) => {
         this.isSubmitting = false;
